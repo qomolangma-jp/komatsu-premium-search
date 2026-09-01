@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>取扱店検索 | いい街こまつプレミアム</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; background-color: #f8f9fa; color: #333; padding: 20px; }
+    .container { max-width: 1000px; margin: 0 auto; background: #ffffff; padding: 24px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+    h1 { font-size: 24px; color: #1a73e8; margin-bottom: 20px; text-align: center; }
+    .search-box { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 20px; background: #f1f3f4; padding: 16px; border-radius: 8px; }
+    .search-box input[type="text"], .search-box select { flex: 1; min-width: 200px; padding: 10px 14px; font-size: 15px; border: 1px solid #ccc; border-radius: 6px; outline: none; }
+    .search-box input[type="text"]:focus, .search-box select:focus { border-color: #1a73e8; }
+    .stats { font-size: 14px; color: #666; margin-bottom: 12px; text-align: right; }
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    th, td { padding: 12px 14px; text-align: left; border-bottom: 1px solid #e0e0e0; font-size: 14px; }
+    th { background-color: #1a73e8; color: #ffffff; font-weight: 600; position: sticky; top: 0; }
+    tr:nth-child(even) { background-color: #f9fbfd; }
+    tr:hover { background-color: #f1f7fe; }
+    .badge { display: inline-block; padding: 4px 8px; font-size: 12px; border-radius: 4px; background-color: #e8f0fe; color: #1a73e8; font-weight: 500; }
+    .no-result { text-align: center; padding: 30px; color: #888; font-size: 15px; }
+    @media (max-width: 600px) { body { padding: 10px; } .container { padding: 15px; } th, td { padding: 8px 10px; font-size: 13px; } }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>いい街こまつプレミアム 取扱店検索</h1>
+
+  <!-- 検索コントロールエリア -->
+  <div class="search-box">
+    <input type="text" id="keywordInput" placeholder="店舗名や住所で検索...">
+    
+    <select id="categorySelect">
+      <option value="">すべての業種・カテゴリ</option>
+    </select>
+
+    <select id="facilitySelect">
+      <option value="">すべての区分（施設/全般）</option>
+      <option value="業種別">一般店舗（路面店等）</option>
+      <option value="アル・プラザ小松">アル・プラザ小松</option>
+      <option value="イオン小松店">イオン小松店</option>
+      <option value="イオンモール新小松">イオンモール新小松</option>
+    </select>
+  </div>
+
+  <div class="stats" id="statsArea">該当店舗: 0 件</div>
+
+  <!-- 結果表示テーブル -->
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 25%;">カテゴリ/業種</th>
+        <th style="width: 35%;">店舗名</th>
+        <th style="width: 20%;">施設・区分</th>
+        <th style="width: 20%;">住所</th>
+      </tr>
+    </thead>
+    <tbody id="shopTableBody">
+      <tr>
+        <td colspan="4" class="no-result">データを読み込み中...</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<script>
+  let storesData = [];
+
+  // DOM要素
+  const keywordInput = document.getElementById('keywordInput');
+  const categorySelect = document.getElementById('categorySelect');
+  const facilitySelect = document.getElementById('facilitySelect');
+  const shopTableBody = document.getElementById('shopTableBody');
+  const statsArea = document.getElementById('statsArea');
+
+  // 外部ファイル stores.json の取得
+  fetch('stores.json')
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('HTTPエラー: ' + response.status);
+      }
+      return response.json();
+    })
+    .then(data => {
+      storesData = data;
+      initCategoryOptions(data);
+      renderTable(storesData);
+    })
+    .catch(error => {
+      console.error('読み込み失敗:', error);
+      shopTableBody.innerHTML = `<tr><td colspan="4" class="no-result" style="color:red;">データの読み込みに失敗しました。<br><code>stores.json</code> が同一フォルダに存在するか確認してください。</td></tr>`;
+    });
+
+  // カテゴリ選択肢を動的にセット
+  function initCategoryOptions(data) {
+    const categories = new Set();
+    data.forEach(item => {
+      if (item.category) categories.add(item.category);
+    });
+
+    Array.from(categories).sort().forEach(cat => {
+      const option = document.createElement('option');
+      option.value = cat;
+      option.textContent = cat;
+      categorySelect.appendChild(option);
+    });
+  }
+
+  // テーブルの描画
+  function renderTable(data) {
+    shopTableBody.innerHTML = '';
+    statsArea.textContent = `該当店舗: ${data.length} 件`;
+
+    if (data.length === 0) {
+      shopTableBody.innerHTML = '<tr><td colspan="4" class="no-result">条件に一致する店舗は見つかりませんでした。</td></tr>';
+      return;
+    }
+
+    const fragment = document.createDocumentFragment();
+
+    data.forEach(item => {
+      const tr = document.createElement('tr');
+      const facilityText = item.facility_name ? item.facility_name : (item.facility_type || '-');
+
+      tr.innerHTML = `
+        <td><span class="badge">${escapeHtml(item.category || '-')}</span></td>
+        <td><strong>${escapeHtml(item.shop_name || '-')}</strong></td>
+        <td>${escapeHtml(facilityText)}</td>
+        <td>${escapeHtml(item.address || '-')}</td>
+      `;
+      fragment.appendChild(tr);
+    });
+
+    shopTableBody.appendChild(fragment);
+  }
+
+  // 絞り込みフィルター処理
+  function filterStores() {
+    const keyword = keywordInput.value.toLowerCase().trim();
+    const selectedCategory = categorySelect.value;
+    const selectedFacility = facilitySelect.value;
+
+    const filtered = storesData.filter(item => {
+      const matchesKeyword = !keyword || 
+        (item.shop_name && item.shop_name.toLowerCase().includes(keyword)) ||
+        (item.address && item.address.toLowerCase().includes(keyword));
+
+      const matchesCategory = !selectedCategory || item.category === selectedCategory;
+
+      let matchesFacility = true;
+      if (selectedFacility) {
+        if (selectedFacility === '業種別') {
+          matchesFacility = item.facility_type === '業種別' && !item.facility_name;
+        } else {
+          matchesFacility = item.facility_name === selectedFacility;
+        }
+      }
+
+      return matchesKeyword && matchesCategory && matchesFacility;
+    });
+
+    renderTable(filtered);
+  }
+
+  function escapeHtml(str) {
+    return str
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
+  keywordInput.addEventListener('input', filterStores);
+  categorySelect.addEventListener('change', filterStores);
+  facilitySelect.addEventListener('change', filterStores);
+</script>
+
+</body>
+</html>
