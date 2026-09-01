@@ -5,29 +5,215 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>取扱店検索 | いい街こまつプレミアム</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; background-color: #f8f9fa; color: #333; padding: 20px; }
-    .container { max-width: 1000px; margin: 0 auto; background: #ffffff; padding: 24px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
-    h1 { font-size: 24px; color: #1a73e8; margin-bottom: 20px; text-align: center; }
-    .search-box { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 20px; background: #f1f3f4; padding: 16px; border-radius: 8px; }
-    .search-box input[type="text"], .search-box select { flex: 1; min-width: 200px; padding: 10px 14px; font-size: 15px; border: 1px solid #ccc; border-radius: 6px; outline: none; }
-    .search-box input[type="text"]:focus, .search-box select:focus { border-color: #1a73e8; }
-    .stats { font-size: 14px; color: #666; margin-bottom: 12px; text-align: right; }
-    table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-    th, td { padding: 12px 14px; text-align: left; border-bottom: 1px solid #e0e0e0; font-size: 14px; }
-    th { background-color: #1a73e8; color: #ffffff; font-weight: 600; position: sticky; top: 0; }
-    tr:nth-child(even) { background-color: #f9fbfd; }
-    tr:hover { background-color: #f1f7fe; }
-    .badge { display: inline-block; padding: 4px 8px; font-size: 12px; border-radius: 4px; background-color: #e8f0fe; color: #1a73e8; font-weight: 500; }
-    .no-result { text-align: center; padding: 30px; color: #888; font-size: 15px; }
-    @media (max-width: 600px) { body { padding: 10px; } .container { padding: 15px; } th, td { padding: 8px 10px; font-size: 13px; } }
+    :root {
+      --brand-ink: #60363f;
+      --brand-ink-dark: #3b2228;
+      --brand-green: #0f8f52;
+      --brand-green-soft: #e7f4ec;
+      --brand-cream: #f6f2e8;
+      --brand-cream-soft: #fbf8f1;
+      --line-soft: #e3d9c5;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: "Yu Gothic", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+      background:
+        radial-gradient(circle at 15% 0%, #fffdf7 0%, #f7f1e3 35%, #f4ecdd 100%);
+      color: #2f2a2b;
+      padding-bottom: 40px;
+    }
+    
+    /* ヘッダーエリアのデザイン */
+    .site-header {
+      background:
+        linear-gradient(180deg, #050505 0%, #0d0d0d 100%);
+      color: #fff;
+      padding: 18px 16px 16px;
+      border-bottom: 4px solid rgba(120, 64, 72, 0.85);
+      margin-bottom: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .site-header::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(120, 64, 72, 0.04), rgba(255,255,255,0), rgba(120, 64, 72, 0.04));
+      pointer-events: none;
+    }
+    .header-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 18px;
+      position: relative;
+      z-index: 1;
+    }
+    .header-content {
+      flex: 1;
+    }
+    .sub-title {
+      font-size: 14px;
+      color: #e8d9be;
+      display: inline-block;
+      padding: 2px 0;
+      font-weight: 600;
+      margin-bottom: 8px;
+      letter-spacing: 0.1em;
+    }
+    .main-title {
+      font-size: 0;
+      margin-top: 4px;
+    }
+    .header-logo-img {
+      width: min(720px, 100%);
+      height: auto;
+      display: block;
+    }
+    .logo-text {
+      font-size: 32px;
+      font-weight: 800;
+      line-height: 1.2;
+      color: var(--brand-ink);
+    }
+    .period-info {
+      font-size: 13px;
+      margin-top: 12px;
+      color: #fff3da;
+      display: inline-block;
+      padding: 6px 12px;
+      border: 1px solid rgba(255, 243, 218, 0.45);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.05);
+    }
+    /* メインコンテンツエリア */
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      background: var(--brand-cream-soft);
+      padding: 24px;
+      border-radius: 12px;
+      border: 1px solid var(--line-soft);
+      box-shadow: 0 10px 24px rgba(48, 36, 24, 0.08);
+    }
+    
+    .search-box {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 20px;
+      background: #f4ecdd;
+      padding: 16px;
+      border-radius: 8px;
+      border: 1px solid var(--line-soft);
+    }
+    .search-box input[type="text"],
+    .search-box select {
+      flex: 1;
+      min-width: 200px;
+      padding: 10px 14px;
+      font-size: 15px;
+      border: 1px solid #c9bba3;
+      border-radius: 6px;
+      outline: none;
+      background: #fffefb;
+      transition: border-color 0.2s;
+    }
+    .search-box input[type="text"]:focus,
+    .search-box select:focus {
+      border-color: var(--brand-green);
+    }
+    .stats {
+      font-size: 14px;
+      color: #63544d;
+      margin-bottom: 12px;
+      text-align: right;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    th, td {
+      padding: 12px 14px;
+      text-align: left;
+      border-bottom: 1px solid #e7dcc8;
+      font-size: 14px;
+    }
+    th {
+      background-color: var(--brand-ink);
+      color: #ffffff;
+      font-weight: 600;
+      position: sticky;
+      top: 0;
+    }
+    tr:nth-child(even) {
+      background-color: #f9f3e8;
+    }
+    tr:hover {
+      background-color: #ece3d2;
+    }
+    .badge {
+      display: inline-block;
+      padding: 4px 8px;
+      font-size: 12px;
+      border-radius: 4px;
+      background-color: var(--brand-green-soft);
+      color: #166f45;
+      font-weight: 500;
+    }
+    .no-result {
+      text-align: center;
+      padding: 30px;
+      color: #888;
+      font-size: 15px;
+    }
+
+    @media (max-width: 768px) {
+      .header-container {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .sub-title {
+        font-size: 12px;
+      }
+      .header-banner-img {
+        width: 140px;
+      }
+      .header-logo-img {
+        width: 100%;
+        max-width: 560px;
+      }
+      .period-info {
+        border-radius: 10px;
+      }
+    }
   </style>
 </head>
 <body>
 
-<div class="container">
-  <h1>いい街こまつプレミアム 取扱店検索</h1>
+<!-- ヘッダーエリア -->
+<header class="site-header">
+  <div class="header-container">
+    <div class="header-content">
+      <div class="sub-title">小松市プレミアム付商品券</div>
+      <h1 class="main-title">
+        <img class="header-logo-img" src="header.png" alt="いい街こまつプレミアム 2026" />
+      </h1>
+      <div class="period-info">利用期間: 令和8年6月24日(水) 〜 10月31日(土)</div>
+    </div>
+    
+  </div>
+</header>
 
+<div class="container">
   <!-- 検索コントロールエリア -->
   <div class="search-box">
     <input type="text" id="keywordInput" placeholder="店舗名や住所で検索...">
@@ -68,14 +254,13 @@
 <script>
   let storesData = [];
 
-  // DOM要素
   const keywordInput = document.getElementById('keywordInput');
   const categorySelect = document.getElementById('categorySelect');
   const facilitySelect = document.getElementById('facilitySelect');
   const shopTableBody = document.getElementById('shopTableBody');
   const statsArea = document.getElementById('statsArea');
 
-  // 外部ファイル stores.json の取得
+  // JSONデータの読み込み（外部ファイル stores.json）
   fetch('stores.json')
     .then(response => {
       if (!response.ok) {
@@ -93,7 +278,6 @@
       shopTableBody.innerHTML = `<tr><td colspan="4" class="no-result" style="color:red;">データの読み込みに失敗しました。<br><code>stores.json</code> が同一フォルダに存在するか確認してください。</td></tr>`;
     });
 
-  // カテゴリ選択肢を動的にセット
   function initCategoryOptions(data) {
     const categories = new Set();
     data.forEach(item => {
@@ -108,7 +292,6 @@
     });
   }
 
-  // テーブルの描画
   function renderTable(data) {
     shopTableBody.innerHTML = '';
     statsArea.textContent = `該当店舗: ${data.length} 件`;
@@ -136,7 +319,6 @@
     shopTableBody.appendChild(fragment);
   }
 
-  // 絞り込みフィルター処理
   function filterStores() {
     const keyword = keywordInput.value.toLowerCase().trim();
     const selectedCategory = categorySelect.value;
