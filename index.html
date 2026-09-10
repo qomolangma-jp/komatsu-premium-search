@@ -78,13 +78,38 @@
       letter-spacing: 0.1em;
     }
     .main-title {
-      font-size: 0;
       margin-top: 4px;
+      display: inline-block;
+      line-height: 1;
+      letter-spacing: 0.04em;
+      font-weight: 900;
+      color: var(--brand-ink-dark);
+      text-shadow: 0 2px 0 rgba(255,255,255,0.16);
     }
-    .header-logo-img {
-      width: min(720px, 100%);
-      height: auto;
+    .site-title-main {
       display: block;
+      font-size: clamp(26px, 4vw, 54px);
+      line-height: 1.05;
+      letter-spacing: 0.08em;
+    }
+    .site-title-accent {
+      display: block;
+      margin-top: 6px;
+      font-size: clamp(18px, 2.1vw, 28px);
+      color: #ffffff;
+      background: rgba(58, 34, 38, 0.18);
+      padding: 8px 12px;
+      border-radius: 999px;
+      display: inline-block;
+      letter-spacing: 0.14em;
+    }
+    .site-title-sub {
+      display: block;
+      margin-top: 10px;
+      font-size: clamp(12px, 1.4vw, 18px);
+      letter-spacing: 0.12em;
+      color: #4A2E2B;
+      font-weight: 700;
     }
     .logo-text {
       font-size: 32px;
@@ -206,9 +231,12 @@
         font-size: 12px;
         line-height: 1.5;
       }
-      .header-logo-img {
-        width: 100%;
-        max-width: 560px;
+      .site-title-main {
+        letter-spacing: 0.06em;
+      }
+      .site-title-accent {
+        padding: 7px 10px;
+        letter-spacing: 0.1em;
       }
       .period-info {
         border-radius: 10px;
@@ -267,8 +295,10 @@
   <div class="header-container">
     <div class="header-content">
       <div class="sub-title">【非公式】小松市プレミアム付商品券-取扱店検索</div>
-      <h1 class="main-title">
-        <img class="header-logo-img" src="header.png" alt="いい街こまつプレミアム 2026" />
+      <h1 class="main-title" aria-label="いい街こまつプレミアム 取扱店検索">
+        <span class="site-title-main">いい街こまつ</span>
+        <span class="site-title-accent">プレミアム</span>
+        <span class="site-title-sub">取扱店検索</span>
       </h1>
       <div class="period-info">利用期間: 令和8年6月24日(水) 〜 10月31日(土)</div>
     </div>
