@@ -250,6 +250,31 @@
       font-size: 15px;
     }
 
+    .site-footer {
+      max-width: 1000px;
+      margin: 20px auto 0;
+      padding: 18px 18px 8px;
+      color: #5d4d49;
+      font-size: 13px;
+      line-height: 1.8;
+    }
+
+    .site-footer .footer-note {
+      background: rgba(255, 255, 255, 0.42);
+      border: 1px solid var(--line-soft);
+      border-radius: 10px;
+      padding: 16px 18px;
+    }
+
+    .site-footer strong {
+      font-weight: 700;
+    }
+
+    .site-footer a {
+      color: #1d6d49;
+      text-decoration: underline;
+    }
+
     @media (max-width: 768px) {
       body {
         min-width: 320px;
@@ -380,6 +405,15 @@
     </table>
   </div>
 </div>
+
+<footer class="site-footer">
+  <div class="footer-note">
+    <strong>【ご利用にあたって（非公式）】</strong><br>
+    本サイトは個人が作成した<strong>非公式の検索ツール</strong>です。<br>
+    小松市公式の取扱店一覧データをAIで抽出して掲載しています。<br>
+    追加・変更等があるため、最新・正確な情報は<a href="https://www.city.komatsu.lg.jp/" target="_blank" rel="noopener noreferrer">小松市公式ホームページ</a>をご確認ください。
+  </div>
+</footer>
 
 <script>
   let storesData = [];
