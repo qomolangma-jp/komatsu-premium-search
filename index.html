@@ -37,96 +37,131 @@
       padding-bottom: 40px;
     }
     
-    /* ヘッダーエリアのデザイン */
+/* ==========================================
+       ヘッダーエリアのデザイン（明るい山吹色×緑）
+    ========================================== */
     .site-header {
-    background: #FFAB27;
-    color: #4A2E2B;
-    padding: 5px 15px 10px;
-    border-bottom: 4px solid #008751; /* アクセントのグリーン */
-    margin-bottom: 24px;
-    position: relative;
-    overflow: hidden;
+      /* 明るく華やかな山吹色〜ゴールド系のグラデーション */
+      background: linear-gradient(135deg, #ffc44d 0%, #f7a224 100%);
+      color: #3b2228;
+      padding: 22px 20px 18px;
+      border-bottom: 5px solid var(--brand-green); /* ブランドグリーンで全体を引き締め */
+      margin-bottom: 24px;
+      position: relative;
+      box-shadow: 0 4px 12px rgba(180, 110, 20, 0.15);
     }
 
+    /* 背景にさりげない光の質感を加える */
     .site-header::before {
       content: "";
       position: absolute;
       inset: 0;
-      background: linear-gradient(90deg, rgba(120, 64, 72, 0.04), rgba(255,255,255,0), rgba(120, 64, 72, 0.04));
+      background: radial-gradient(circle at 90% 10%, rgba(255, 255, 255, 0.4) 0%, transparent 60%);
       pointer-events: none;
     }
+
     .header-container {
       max-width: 1000px;
       margin: 0 auto;
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      gap: 18px;
       position: relative;
       z-index: 1;
     }
+
     .header-content {
-      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
     }
+
+    /* 上部サブタイトル */
     .sub-title {
-      font-size: 14px;
-      color: #e8d9be;
       display: inline-block;
-      padding: 2px 0;
-      font-weight: 600;
-      margin-bottom: 8px;
-      letter-spacing: 0.1em;
-    }
-    .main-title {
-      margin-top: 4px;
-      display: inline-block;
-      line-height: 1;
-      letter-spacing: 0.04em;
-      font-weight: 900;
-      color: var(--brand-ink-dark);
-      text-shadow: 0 2px 0 rgba(255,255,255,0.16);
-    }
-    .site-title-main {
-      display: block;
-      font-size: clamp(26px, 4vw, 54px);
-      line-height: 1.05;
-      letter-spacing: 0.08em;
-    }
-    .site-title-accent {
-      display: block;
-      margin-top: 6px;
-      font-size: clamp(18px, 2.1vw, 28px);
-      color: #ffffff;
-      background: rgba(58, 34, 38, 0.18);
-      padding: 8px 12px;
-      border-radius: 999px;
-      display: inline-block;
-      letter-spacing: 0.14em;
-    }
-    .site-title-sub {
-      display: block;
-      margin-top: 10px;
-      font-size: clamp(12px, 1.4vw, 18px);
-      letter-spacing: 0.12em;
-      color: #4A2E2B;
+      font-size: 12px;
+      letter-spacing: 0.06em;
+      color: #4a2e2b;
+      background: rgba(255, 255, 255, 0.65);
+      padding: 3px 10px;
+      border-radius: 4px;
       font-weight: 700;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
     }
-    .logo-text {
-      font-size: 32px;
+
+    /* メインタイトル */
+    .main-title {
+      margin: 4px 0;
+      line-height: 1.25;
+      font-weight: 900;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px 10px;
+    }
+
+    .site-title-main {
+      font-size: clamp(22px, 3.2vw, 36px);
+      letter-spacing: 0.06em;
+      color: #3b2228; /* 深みのあるブラウンで可読性を確保 */
+      font-weight: 900;
+    }
+
+    .site-title-accent {
+      font-size: clamp(14px, 2vw, 20px);
+      color: #ffffff;
+      background: var(--brand-green); /* 明るい背景で緑バッジが非常に映えます */
+      padding: 4px 14px;
+      border-radius: 20px;
+      letter-spacing: 0.08em;
       font-weight: 800;
-      line-height: 1.2;
-      color: var(--brand-ink);
+      box-shadow: 0 2px 6px rgba(15, 143, 82, 0.3);
     }
+
+    .site-title-sub {
+      font-size: clamp(14px, 1.8vw, 20px);
+      letter-spacing: 0.08em;
+      color: #4a2e2b;
+      font-weight: 800;
+    }
+
+    /* 利用期間情報 */
     .period-info {
       font-size: 13px;
-      margin-top: 12px;
-      color: #fff3da;
-      display: inline-block;
-      padding: 6px 12px;
-      border: 1px solid rgba(255, 243, 218, 0.45);
+      color: #2f2a2b;
+      display: inline-flex;
+      align-items: center;
+      padding: 5px 14px;
       border-radius: 999px;
-      background: rgba(255, 255, 255, 0.05);
+      background: #ffffff;
+      border: 1px solid rgba(15, 143, 82, 0.3); /* 緑の極細ボーダー */
+      margin-top: 4px;
+      font-weight: 700;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.04);
     }
+
+    /* スマホ対応（768px以下） */
+    @media (max-width: 768px) {
+      .site-header {
+        padding: 16px 14px;
+      }
+      
+      .main-title {
+        gap: 6px 8px;
+      }
+
+      .site-title-accent {
+        padding: 3px 10px;
+      }
+
+      .period-info {
+        font-size: 12px;
+        padding: 6px 12px;
+        width: 100%;
+        box-sizing: border-box;
+        justify-content: center;
+      }
+    }
+    
+    
     /* メインコンテンツエリア */
     .container {
       max-width: 1000px;
@@ -295,7 +330,7 @@
   <div class="header-container">
     <div class="header-content">
       <div class="sub-title">【非公式】小松市プレミアム付商品券-取扱店検索</div>
-      <h1 class="main-title" aria-label="いい街こまつプレミアム 取扱店検索">
+      <h1 class="main-title" aria-label="いい街こまつプレミアム取扱店検索">
         <span class="site-title-main">いい街こまつ</span>
         <span class="site-title-accent">プレミアム</span>
         <span class="site-title-sub">取扱店検索</span>
